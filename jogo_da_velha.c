@@ -27,70 +27,9 @@ int check_linhas(JogoDaVelha jogo, char char_jogador);
 int check_diagonais(JogoDaVelha jogo, char char_jogador);
 int check_colunas(JogoDaVelha jogo, char char_jogador);
 int jogada_pc(JogoDaVelha jogo);
-
-void acao_jogador(JogoDaVelha* jogo)
-{
-
-  int _posicao, posicao;
-  int x, y;
-
-  printf("Escolha sua posição: ");
-  scanf("%d", &_posicao);
-  posicao = _posicao-1;
-  if (valida_jogada(_posicao, jogo))
-    {
-      remove_valor(jogo);
-      x = jogo->coordenadas[posicao][0];
-      y = jogo->coordenadas[posicao][1];
-      substitui_valor(jogo, x, y, 'X');
-      jogo->acao_jogador = 0;
-      jogo->acao_pc = 1;
-    }
-    else
-    {
-      printf("Jogada inválida, tente novamente\n");
-      acao_jogador(jogo);
-    }
-}
-
-void acao_pc(JogoDaVelha* jogo)
-{
-
-  int _posicao, posicao;
-  int x, y;
-
-  printf("O computador está jogando ... \n");
-  _posicao = jogada_pc(*jogo);
-  posicao = _posicao-1;
-  valida_jogada(_posicao, jogo);
-  remove_valor(jogo);
-  printf("PC escolheu: %d\n", _posicao);
-  x = jogo->coordenadas[posicao][0];
-  y = jogo->coordenadas[posicao][1];
-  substitui_valor(jogo, x, y, 'O');
-  jogo->acao_jogador = 1;
-  jogo->acao_pc = 0;
-}
-
-int continua_jogo(JogoDaVelha jogo)
-{
-  if ((jogo.num_jogadas> 9 || jogo.tamanho == 0) && jogo.vencedor == -1)
-  {
-    printf("Empate!\n");
-    return 0;
-  }
-  else if (jogo.vencedor == 0)
-  {
-    printf("O jogador venceu!\n");
-    return 0;
-  }
-  else if (jogo.vencedor == 1)
-  {
-    printf("O computador venceu!\n");
-    return 0;
-  }
-  return 1;
-}
+void acao_jogador(JogoDaVelha* jogo);
+void acao_pc(JogoDaVelha* jogo);
+int continua_jogo(JogoDaVelha jogo);
 
 
 int main(int argc, char *argv[])
@@ -362,4 +301,69 @@ int jogada_pc(JogoDaVelha jogo)
   srand(time(NULL));
   int posicao = rand() % jogo.tamanho; // 0 a 9
   return jogo.pos_validas[posicao];
+}
+
+
+void acao_jogador(JogoDaVelha* jogo)
+{
+
+  int _posicao, posicao;
+  int x, y;
+
+  printf("Escolha sua posição: ");
+  scanf("%d", &_posicao);
+  posicao = _posicao-1;
+  if (valida_jogada(_posicao, jogo))
+    {
+      remove_valor(jogo);
+      x = jogo->coordenadas[posicao][0];
+      y = jogo->coordenadas[posicao][1];
+      substitui_valor(jogo, x, y, 'X');
+      jogo->acao_jogador = 0;
+      jogo->acao_pc = 1;
+    }
+    else
+    {
+      printf("Jogada inválida, tente novamente\n");
+      acao_jogador(jogo);
+    }
+}
+
+void acao_pc(JogoDaVelha* jogo)
+{
+
+  int _posicao, posicao;
+  int x, y;
+
+  printf("O computador está jogando ... \n");
+  _posicao = jogada_pc(*jogo);
+  posicao = _posicao-1;
+  valida_jogada(_posicao, jogo);
+  remove_valor(jogo);
+  printf("PC escolheu: %d\n", _posicao);
+  x = jogo->coordenadas[posicao][0];
+  y = jogo->coordenadas[posicao][1];
+  substitui_valor(jogo, x, y, 'O');
+  jogo->acao_jogador = 1;
+  jogo->acao_pc = 0;
+}
+
+int continua_jogo(JogoDaVelha jogo)
+{
+  if ((jogo.num_jogadas> 9 || jogo.tamanho == 0) && jogo.vencedor == -1)
+  {
+    printf("Empate!\n");
+    return 0;
+  }
+  else if (jogo.vencedor == 0)
+  {
+    printf("O jogador venceu!\n");
+    return 0;
+  }
+  else if (jogo.vencedor == 1)
+  {
+    printf("O computador venceu!\n");
+    return 0;
+  }
+  return 1;
 }
